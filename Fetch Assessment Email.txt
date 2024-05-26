@@ -1,0 +1,49 @@
+Hello,
+
+I wanted to reach out regarding some data quality issues I've encountered and discuss potential optimization strategies to enhance our data assets. In reviewing the datasets, I've identified several areas where data quality may be compromised. Following are the findings and questions I have regarding the data.
+
+Questions I have about the data:
+    Users Table:
+        1. How are _id values generated? Understanding the generation process could reveal why duplicates exist.
+        2. Are lastLogin, signUpSource, and state optional fields in the data collection process? If not, why are there null values?
+        3. Is there a business logic to determine when lastLogin should be equal to createdDate?
+        4. Why do some records have "fetch-staff" as a role when it should be "CONSUMER"? Is this a data entry error or a system-related issue?
+
+    Brands Table:
+        1. Why are there barcodes in the rewardsReceiptItemList (fact table) that are missing in the brands (dimension table)? This suggests a potential 	   mismatch in data sources or synchronization issues.
+        2. What is CPG field? Is it significant enough to be put in a table?
+
+    Receipts Table:
+        1. Why are barcodes missing in the rewardsReceiptItemList table? Is this data capture issue or are there other reasons?
+        2. What percentage of records have inconsistent or missing barcodes? This will help quantify the extent of the problem.
+    Is there a requirement for real-time or near real-time data updates, and how do we ensure timely data availability?
+
+
+How data quality issues are discovered:
+
+    Duplicate _id in users data: Found through a query like SELECT _id, COUNT(*) FROM users GROUP BY _id HAVING COUNT(*) > 1 and python scripts.
+    Null values in users data: A simple check for NULL values in the relevant columns revealed the missing fields.
+    Incorrect values: Spotted incorrect values in 'role' field in users data and 'barcode' field in receipts data by checking the frequency of values in the 		      those particular columns.
+    Missing values: Found values missing in lastLogin field by checking the count of lastLogin againt the createdDate field which are mismatched.
+    Used Python, SQL, NoSQL and MS Excel to analyze the data.
+
+I would like to know the following to resolve the data quality issues:
+    
+    What are the business rules for assigning _id, lastLogin, signUpSource, and state. Are these values mandatory?
+    What is the source of the incorrect "fetch-staff" roles? 
+    What is the origin of barcode data in both rewardsReceiptItemList and brands to identify inconsistencies?
+    
+
+Other information I would need to optimize the data assets that I'm trying to create:
+
+    Business KPIs: Knowing which metrics are most important to the business can help data cleaning and transformation priorities. Example: focusing on 			   fixing barcode issues if brand performance is critical).
+    Data Dictionary: A clear definition of each table, column, and their business meaning would help interpret the data correctly especially 				   rewardsReceiptItemList and CPG fields.
+
+Performance and scaling concerns I anticipate in production and how I plan to address them:
+    Query Performance: As the dataset grows, complex queries (e.g., joining across multiple tables) may become slower. Indexing relevant columns and 			   optimizing query structures can help. Removing some of the fields that are not required would reduce memory usage. Having direct 			   references of each table in every other table would greatly help in reducing the CPU usage time.
+
+Please let me know if you would like to discuss these further or if you have any specific requirements or expectations regarding our data quality. Your insights and guidance on these matters would be greatly appreciated.
+
+
+Thanks,
+Vamsi Sattenapalli
