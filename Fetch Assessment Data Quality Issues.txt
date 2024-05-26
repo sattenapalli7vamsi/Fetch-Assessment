@@ -1,0 +1,21 @@
+Evaluation Data Quality Issues in the Data Provided:
+Note: The following data quality issues are found through various normal checks as well as Python Scripts, few SQL queries and using MS Excel. An ipynb file is available in the GitHub public repository.
+
+Users data issues:
+•	There are duplicate records in the id field (primary key) which violates 1NF.
+•	'lastlogin' will have NULLS when converted from document type to relational/structured data type.
+•	'singUpSource' will have NULLS when converted from document type to relational/structured data type.
+•	'state' will have NULLS when converted from document type to relational/structured data type.
+•	Few records has 'fetch-staff' for the column 'role' in the place where it should be 'CONSUMER'.
+•	There are many records which doesn't have 'lastLogin' dates recorded. These must be either not recorded entirely or these has to be filled with 	'createdDate' if the user created the account and never used. 
+
+Brands data issues:
+•	We will encounter data integrity issues due to the absence of barcode values in dimension table which are present in the fact table 	(rewardsReceiptItemList). But, within the brands tables, data is consistent and every item is recorded correctly.
+•	However, there is an item 'cpg' which has no significance that can be removed from the table schema. If it has to be added, it should be added as a 	separate table and will have brandId and _id as composite primary key.
+•	Since it has no significance, to be space efficient, I did not include it in ERD diagram.
+
+Receipts data issues:
+•	Receipts table will data inconsistencies when converted from document type to relational/structured data type.
+•	'barcode' in the rewardsReceiptItemList is not recorded properly even though it is required in document type, to get the brand name to answer some of 	the questions like 'which brand performed well?' or 'What are the top 5 brands by receipts scanned for most recent month?'. This problem increases 	particularly if the data is made as structured.
+•	When observed the data using Python, there are only 593 reward receipts with 'barcode' in it. This makes almost half of the data useless when used for 	checking the brand name. 
+•	Of 593 records in which barcode is present, there are many records where barcode is recorded inconsistently.
